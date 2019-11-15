@@ -102,27 +102,29 @@ class CPU:
     def cmp(self):
         reg_a = self.ram_read(self.pc + 1)
         reg_b = self.ram_read(self.pc + 2)
+        value_a = self.reg[reg_a]
+        value_b = self.reg[reg_b]
 
-        self.equal = reg_a == reg_b
+        self.equal = value_a == value_b
         self.pc += 3
 
     def jmp(self):
-        value = self.ram_read(self.pc + 1)
+        value = self.reg[self.ram_read(self.pc + 1)]
         self.pc = value
 
     def jeq(self):
         if self.equal:
-            value = self.ram_read(self.pc + 1)
+            value = self.reg[self.ram_read(self.pc + 1)]
             self.pc = value
         else:
-            self.pc += 1
+            self.pc += 2
 
     def jne(self):
         if not self.equal:
-            value = self.ram_read(self.pc + 1)
+            value = self.reg[self.ram_read(self.pc + 1)]
             self.pc = value
         else:
-            self.pc += 1
+            self.pc += 2
 
     def trace(self):
         """
