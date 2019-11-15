@@ -12,6 +12,8 @@ POP = 0b01000110
 # Sprint Challenge
 CMP = 0b10100111
 JMP = 0b01010100
+JEQ = 0b01010101
+JNE = 0b01010110
 
 
 class CPU:
@@ -35,6 +37,8 @@ class CPU:
         self.operations[POP] = self.stack_pop
         self.operations[CMP] = self.cmp
         self.operations[JMP] = self.jmp
+        self.operations[JEQ] = self.jeq
+        self.operations[JNE] = self.jne
 
     def load(self, program):
         """Load a program into memory."""
@@ -105,6 +109,20 @@ class CPU:
     def jmp(self):
         value = self.ram_read(self.pc + 1)
         self.pc = value
+
+    def jeq(self):
+        if self.equal:
+            value = self.ram_read(self.pc + 1)
+            self.pc = value
+        else:
+            self.pc += 1
+
+    def jne(self):
+        if not self.equal:
+            value = self.ram_read(self.pc + 1)
+            self.pc = value
+        else:
+            self.pc += 1
 
     def trace(self):
         """
